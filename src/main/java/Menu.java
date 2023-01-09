@@ -27,11 +27,16 @@ public class Menu {
                 System.out.println("set year of production");
                 int yearOfProduction = scanner.nextInt();
                 System.out.println("set genre");
+                scanner.nextLine();
                 String genre = scanner.nextLine();
                 System.out.println("set score");
                 int score = scanner.nextInt();
-
-                moviesData.addMovie(new Movie(title,yearOfProduction,genre,score));
+                scanner.nextLine();
+                if (MovieValidator.validateMovie(new Movie(title,yearOfProduction,genre,score))){
+                    moviesData.addMovie(new Movie(title,yearOfProduction,genre,score));
+                } else {
+                    System.out.println("wrong input");
+                }
             } else {
                 System.out.println("wrong input, try again");
             }

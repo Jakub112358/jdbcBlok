@@ -12,4 +12,30 @@ public class Movie {
         this.movieGenre = movieGenre;
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", yearOfProduction=" + yearOfProduction +
+                ", movieGenre='" + movieGenre + '\'' +
+                ", score=" + score +
+                '}';
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getYearOfProduction() {
+        return yearOfProduction;
+    }
+
+    public String getMovieGenre() {
+        return movieGenre;
+    }
+
+    public int getScore() {
+        return score;
+    }
 }
