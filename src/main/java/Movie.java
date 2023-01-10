@@ -1,14 +1,17 @@
+import java.util.List;
+
 public class Movie {
+    private int id;
     private String title;
     private int yearOfProduction;
     private String movieGenre;
-    private int rate;
+    private int score;
 
     public Movie(String title, int yearOfProduction, String movieGenre, int score) {
         this.title = title;
         this.yearOfProduction = yearOfProduction;
         this.movieGenre = movieGenre;
-        this.rate = score;
+        this.score = score;
     }
 
     @Override
@@ -17,8 +20,12 @@ public class Movie {
                 "title='" + title + '\'' +
                 ", yearOfProduction=" + yearOfProduction +
                 ", movieGenre='" + movieGenre + '\'' +
-                ", rate=" + rate +
+                ", score=" + score +
                 '}';
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -33,7 +40,7 @@ public class Movie {
         return movieGenre;
     }
 
-    public int getRate() {
-        return rate;
+    public int getScore() {
+        return score;
     }
 }

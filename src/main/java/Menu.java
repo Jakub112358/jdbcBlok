@@ -21,22 +21,13 @@ public class Menu {
 
         switch (input) {
             case "1":
-                System.out.println(" you've chosen adding movie");
-                Movie inputMovie = setNewMovie();
-                if (MovieValidator.validateMovie(inputMovie)) {
-                    MoviesData.getInstance().addMovie(inputMovie);
-                } else {
-                    System.out.println("wrong movie input");
-                }
-
+                addMovie();
                 break;
             case "2":
-                System.out.println("you've chosen displaying movies");
-                MoviesData.getInstance().getMovies();
+                displayMovies();
                 break;
             case "3":
-                System.out.println("terminating program");
-                running = false;
+terminateLoop();
                 break;
             default:
                 System.out.println("wrong input, try again");
@@ -44,18 +35,22 @@ public class Menu {
         }
     }
 
-    private Movie setNewMovie(){
+    private Movie setNewMovie() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("set title");
         String title = scanner.nextLine();
         System.out.println("set year of production");
         int yearOfProduction = scanner.nextInt();
+        // tu jest coś źle!!
+        if(!MovieValidator.validateMovieDate(yearOfProduction)){
+            System.out.println("wrong date of production");
+            return setNewMovie();
+        }
         System.out.println("set genre");
         scanner.nextLine();
         String genre = scanner.nextLine();
-        System.out.println("set rate");
+        System.out.println("set rate (1-10): ");
         int score = scanner.nextInt();
-        scanner.nextLine();
         return new Movie(title, yearOfProduction, genre, score);
     }
 
@@ -73,6 +68,24 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
 
+    }
+
+    private void addMovie() {
+        System.out.println(" you've chosen adding movie");
+        Movie inputMovie = setNewMovie();
+        MoviesDAO.getInstance().addMovie(inputMovie);
+    }
+
+    private void displayMovies() {
+        System.out.println("you've chosen displaying movies");
+
+        for (Movie movie : MoviesDAO.getInstance().getMovies()) {
+            System.out.println(movie);
+        }
+    }
+    private void terminateLoop(){
+        System.out.println("terminating program");
+        running = false;
     }
 }
 

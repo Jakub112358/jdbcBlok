@@ -1,7 +1,5 @@
 public class MovieValidator {
-    public static boolean validateMovie (Movie movie){
-        if (movie.getYearOfProduction()>=1800 && movie.getYearOfProduction()<=2100)
-            return true;
-        return false;
+    public static boolean validateMovieDate (int yearOfProduction){
+        return yearOfProduction >= 1800 && yearOfProduction <= 2100;
     }
 }
