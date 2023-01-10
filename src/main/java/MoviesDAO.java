@@ -6,32 +6,45 @@ import java.util.List;
 
 public class MoviesDAO {
     private static MoviesDAO instance;
-    private final Connection connection;
+    private static final String CREATE_TABLE_SQL = """
+            CREATE TABLE IF NOT EXISTS movies (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255) NOT NULL,
+            yearOfProduction int NOT NULL,
+            genre varchar(255) NOT NULL,
+            score int NOT NULL
+            );
+            """;
+    private static final String URL_SQL = "jdbc:mysql://localhost:3306/movies";
+    private static final String USER_SQL = "root";
+    private static final String PASSWORD_SQL = "1234";
+    private static final String ADD_MOVIE_SQL = "INSERT INTO movies (title, yearOfProduction, genre, score) VALUES (?,?,?,?)";
+    private static final String GET_ALL_MOVIES_SQL = "SELECT * FROM movies";
+    private Connection connection;
 
-    private MoviesDAO()  {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/movies","root","1234");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private MoviesDAO() {
+        connect();
+        createTable();
+    }
 
-        String createTable = """
-                CREATE TABLE IF NOT EXISTS movies (
-                id int AUTO_INCREMENT PRIMARY KEY,
-                title varchar(255) NOT NULL,
-                yearOfProduction int NOT NULL,
-                genre varchar(255) NOT NULL,
-                score int NOT NULL
-                );
-                """;
+    private void createTable() {
         try {
-            connection.prepareStatement(createTable).execute();
+            connection.prepareStatement(CREATE_TABLE_SQL).execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static MoviesDAO getInstance()  {
+    private void connect() {
+        try {
+            connection = DriverManager.getConnection(URL_SQL, USER_SQL, PASSWORD_SQL);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static MoviesDAO getInstance() {
         if (instance == null) {
             instance = new MoviesDAO();
         }
@@ -39,14 +52,13 @@ public class MoviesDAO {
     }
 
     public void addMovie(Movie movie) {
-        String addMovieString = "INSERT INTO movies (title, yearOfProduction, genre, score) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement;
         try {
-            preparedStatement = connection.prepareStatement(addMovieString);
-            preparedStatement.setString(1,movie.getTitle());
-            preparedStatement.setInt(2,movie.getYearOfProduction());
-            preparedStatement.setString(3,movie.getMovieGenre());
-            preparedStatement.setInt(4,movie.getScore());
+            preparedStatement = connection.prepareStatement(ADD_MOVIE_SQL);
+            preparedStatement.setString(1, movie.getTitle());
+            preparedStatement.setInt(2, movie.getYearOfProduction());
+            preparedStatement.setString(3, movie.getMovieGenre());
+            preparedStatement.setInt(4, movie.getScore());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,13 +66,22 @@ public class MoviesDAO {
     }
 
     public List<Movie> getMovies() {
-        List<Movie> movieList = new ArrayList<>();
-        String getMoviesString = "SELECT * FROM movies";
+        List<Movie> movieList;
         PreparedStatement preparedStatement;
         try {
-            preparedStatement = connection.prepareStatement(getMoviesString);
+            preparedStatement = connection.prepareStatement(GET_ALL_MOVIES_SQL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
+            movieList = mapResultSetToList(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return movieList;
+    }
+
+    private List<Movie> mapResultSetToList(ResultSet resultSet){
+        List<Movie> movieList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
                 movieList.add(new Movie(resultSet.getString("title"),
                         resultSet.getInt("yearOfProduction"),
                         resultSet.getString("genre"),
