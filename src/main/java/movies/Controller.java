@@ -4,15 +4,18 @@ import java.sql.SQLException;
 
 public abstract class Controller {
     private boolean running = true;
+
     public void startMenu() {
         do {
             menuAction();
         } while (running);
     }
+
     private void menuAction() {
         String input = readDecision();
         executeOption(input);
     }
+
     private void executeOption(String input) {
         try {
             handleOption(input);
@@ -20,6 +23,7 @@ public abstract class Controller {
             showMessage("data base crashed");
         }
     }
+
     private void handleOption(String input) throws SQLException {
 
         switch (input) {
@@ -39,48 +43,90 @@ public abstract class Controller {
     private Movie setNewMovie() {
         String title = setTitle();
         int yearOfProduction = setYear();
-        if (!MovieValidator.validateMovieDate(yearOfProduction)) {
-            showMessage("wrong date of production");
-            return setNewMovie();
-        }
         String genre = setGenre();
-        int score = setScore();
+        int score = setRate();
         return new Movie(title, yearOfProduction, genre, score);
     }
 
     int setYear() {
-        String yearOfProductionString = setCustomerYear();
-        if(MovieValidator.validateMovieDate(yearOfProductionString)){
+        String yearOfProductionString = getStringFromUser("set year of production");
+        if (validateNumber(yearOfProductionString,"year of production",1800,2100)) {
             return Integer.parseInt(yearOfProductionString);
         } else {
-            showMessage("wrong year of production");
             return setYear();
         }
     }
-    abstract String setCustomerYear();
 
-    abstract String setTitle();
+    private String setTitle() {
+        return getStringFromUser("set title");
+    }
 
-    abstract String setGenre();
-    abstract int setScore();
+    private String setGenre() {
+        return getStringFromUser("set genre");
+    }
 
-    abstract String readDecision();
+    private int setRate() {
+        String rateString = getStringFromUser("set rate (1-10): ");
+        if (validateNumber(rateString,"rate",1,10)) {
+            return Integer.parseInt(rateString);
+        } else {
+            return setRate();
+        }
+    }
+
+    private String readDecision() {
+        return getStringFromUser("""
+                Select:
+                1 - add movie
+                2 - display movies
+                3 - terminate program
+                """);
+    }
+
     private void addMovie() throws SQLException {
-        showMessage("you've chosen displaying movies");
+        showMessage("you've chosen adding movies");
         Movie inputMovie = setNewMovie();
         MoviesService.getInstance().addMovie(inputMovie);
     }
 
-    abstract void displayMovies() throws SQLException;
+    private void displayMovies() throws SQLException {
+        showMessage("you've chosen displaying movies");
+        StringBuilder displayMovieString = new StringBuilder();
+        for (Movie movie : MoviesService.getInstance().getMovies()) {
+            displayMovieString.append(movie).append("\n");
+        }
+        showMessage(displayMovieString.toString());
+    }
+
     private void terminateLoop() {
         displayEndMessage();
         running = false;
     }
+
     void displayEndMessage() {
         showMessage("terminating program");
     }
 
     abstract void showMessage(String message);
 
+    abstract String getStringFromUser(String message);
+
+    private boolean validateNumber(String inputString, String name, int min, int max) {
+        try {
+            int number = Integer.parseInt(inputString);
+            if (number < min) {
+                showMessage(name + " must be > " + min);
+                return false;
+            }
+            if (number > max) {
+                showMessage(name + " must be < " + max);
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            showMessage(name + " must be int");
+            return false;
+        }
+    }
 
 }
