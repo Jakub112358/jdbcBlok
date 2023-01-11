@@ -32,7 +32,7 @@ public abstract class Controller {
                 displayMovies();
                 break;
             case "3":
-                MoviesDAO.getInstance().closeConnection();
+                MoviesService.getInstance().closeConnection();
                 terminateLoop();
                 break;
         }
@@ -44,7 +44,7 @@ public abstract class Controller {
     private void addMovie() throws SQLException {
         displayAddMovieMessage();
         Movie inputMovie = setNewMovie();
-        MoviesDAO.getInstance().addMovie(inputMovie);
+        MoviesService.getInstance().addMovie(inputMovie);
     }
     abstract void displayAddMovieMessage();
     abstract void displayMovies() throws SQLException;

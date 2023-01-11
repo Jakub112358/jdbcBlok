@@ -57,7 +57,7 @@ public class ControllerConsole extends Controller {
     void displayMovies() throws SQLException {
         System.out.println("you've chosen displaying movies");
 
-        for (Movie movie : MoviesDAO.getInstance().getMovies()) {
+        for (Movie movie : MoviesService.getInstance().getMovies()) {
             System.out.println(movie);
         }
     }

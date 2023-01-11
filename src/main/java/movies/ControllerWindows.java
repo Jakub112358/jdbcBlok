@@ -45,7 +45,7 @@ public class ControllerWindows extends Controller {
     void displayMovies() throws SQLException {
         JOptionPane.showMessageDialog(null, "you've chosen displaying movies");
 
-        for (Movie movie : MoviesDAO.getInstance().getMovies()) {
+        for (Movie movie : MoviesService.getInstance().getMovies()) {
             JOptionPane.showMessageDialog(null, movie.toString());
         }
     }

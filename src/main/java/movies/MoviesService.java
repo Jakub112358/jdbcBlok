@@ -4,8 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviesDAO {
-    private static MoviesDAO instance;
+public class MoviesService {
+    private static MoviesService instance;
     private static final String CREATE_TABLE_SQL = """
             CREATE TABLE IF NOT EXISTS movies (
             id int AUTO_INCREMENT PRIMARY KEY,
@@ -22,7 +22,7 @@ public class MoviesDAO {
     private static final String GET_ALL_MOVIES_SQL = "SELECT * FROM movies";
     private Connection connection;
 
-    private MoviesDAO() {
+    private MoviesService() {
         try {
             connect();
             createTable();
@@ -48,9 +48,9 @@ public class MoviesDAO {
     }
 
 
-    public static MoviesDAO getInstance() {
+    public static MoviesService getInstance() {
         if (instance == null) {
-            instance = new MoviesDAO();
+            instance = new MoviesService();
         }
         return instance;
     }
