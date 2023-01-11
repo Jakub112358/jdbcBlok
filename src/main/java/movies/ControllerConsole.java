@@ -17,7 +17,6 @@ public class ControllerConsole extends Controller {
         String title = scanner.nextLine();
         System.out.println("set year of production");
         int yearOfProduction = scanner.nextInt();
-        // tu jest coś źle!!
         if (!MovieValidator.validateMovieDate(yearOfProduction)) {
             System.out.println("wrong date of production");
             return setNewMovie();

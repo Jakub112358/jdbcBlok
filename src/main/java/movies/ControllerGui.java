@@ -3,7 +3,7 @@ package movies;
 import javax.swing.*;
 import java.sql.SQLException;
 
-public class ControllerWindows extends Controller {
+public class ControllerGui extends Controller {
 
     @Override
     void displaySqlExceptionMessage(SQLException e) {
@@ -12,9 +12,9 @@ public class ControllerWindows extends Controller {
 
     @Override
     Movie setNewMovie() {
-
         String title = JOptionPane.showInputDialog("set title");
-        int yearOfProduction = Integer.parseInt(JOptionPane.showInputDialog("set year of production"));
+        String yearOfProductionString = JOptionPane.showInputDialog("set year of production");
+        int yearOfProduction = Integer.parseInt(yearOfProductionString);
         if (!MovieValidator.validateMovieDate(yearOfProduction)) {
             JOptionPane.showMessageDialog(null, "wrong date of production, try again");
             return setNewMovie();
@@ -22,7 +22,6 @@ public class ControllerWindows extends Controller {
         String genre = JOptionPane.showInputDialog("set genre");
         int score = Integer.parseInt(JOptionPane.showInputDialog("set rate (1-10)"));
         return new Movie(title, yearOfProduction, genre, score);
-
     }
 
 
@@ -44,10 +43,12 @@ public class ControllerWindows extends Controller {
     @Override
     void displayMovies() throws SQLException {
         JOptionPane.showMessageDialog(null, "you've chosen displaying movies");
+        StringBuilder displayMovieString = new StringBuilder();
 
         for (Movie movie : MoviesService.getInstance().getMovies()) {
-            JOptionPane.showMessageDialog(null, movie.toString());
+            displayMovieString.append(movie).append("\n");
         }
+        JOptionPane.showMessageDialog(null, displayMovieString.toString());
     }
 
     @Override
