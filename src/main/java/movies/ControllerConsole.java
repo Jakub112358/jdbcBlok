@@ -1,5 +1,6 @@
 package movies;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -7,26 +8,24 @@ public class ControllerConsole extends Controller {
     Scanner scanner = new Scanner(System.in);
 
     @Override
-    void displaySqlExceptionMessage(SQLException e) {
-        e.printStackTrace();
-    }
-
-
-    @Override
     String setTitle() {
         System.out.println("set title");
         return scanner.nextLine();
     }
-
     @Override
     int setYear() {
         System.out.println("set year of production");
-        return scanner.nextInt();
+        String yearOfProductionString = scanner.nextLine();
+        if(MovieValidator.validateMovieDate(yearOfProductionString)){
+            return Integer.parseInt(yearOfProductionString);
+        } else {
+            System.out.println("wrong year of production");
+            return setYear();
+        }
     }
-
-    @Override
-    void incorrectYearMessage() {
-        System.out.println("wrong date of production");
+    String setCustomerYear(){
+        System.out.println("set year of production");
+        return scanner.nextLine();
     }
 
     @Override
@@ -35,13 +34,11 @@ public class ControllerConsole extends Controller {
         scanner.nextLine();
         return scanner.nextLine();
     }
-
     @Override
     int setScore() {
         System.out.println("set rate (1-10): ");
         return scanner.nextInt();
     }
-
     private void showOptions() {
         System.out.println("""
                 Select:
@@ -50,18 +47,12 @@ public class ControllerConsole extends Controller {
                 3 - terminate program
                 """);
     }
-
     @Override
     String readDecision() {
         showOptions();
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
 
-    }
-
-    @Override
-    void displayAddMovieMessage() {
-        System.out.println(" you've chosen adding movie");
     }
 
     @Override
@@ -72,11 +63,11 @@ public class ControllerConsole extends Controller {
             System.out.println(movie);
         }
     }
-
-
     @Override
-    void displayEndMessage() {
-        System.out.println("terminating program");
+
+
+    void showMessage(String message){
+        System.out.println(message);
     }
 }
 

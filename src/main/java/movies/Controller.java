@@ -17,10 +17,9 @@ public abstract class Controller {
         try {
             handleOption(input);
         } catch (SQLException e) {
-            displaySqlExceptionMessage(e);
+            showMessage("data base crashed");
         }
     }
-    abstract void displaySqlExceptionMessage(SQLException e);
     private void handleOption(String input) throws SQLException {
 
         switch (input) {
@@ -41,7 +40,7 @@ public abstract class Controller {
         String title = setTitle();
         int yearOfProduction = setYear();
         if (!MovieValidator.validateMovieDate(yearOfProduction)) {
-            incorrectYearMessage();
+            showMessage("wrong date of production");
             return setNewMovie();
         }
         String genre = setGenre();
@@ -51,25 +50,26 @@ public abstract class Controller {
 
     abstract String setTitle();
     abstract int setYear();
-    abstract void incorrectYearMessage();
     abstract String setGenre();
     abstract int setScore();
 
     abstract String readDecision();
     private void addMovie() throws SQLException {
-        displayAddMovieMessage();
+        showMessage("you've chosen displaying movies");
         Movie inputMovie = setNewMovie();
         MoviesService.getInstance().addMovie(inputMovie);
     }
-    abstract void displayAddMovieMessage();
+
     abstract void displayMovies() throws SQLException;
     private void terminateLoop() {
         displayEndMessage();
         running = false;
     }
-    abstract void displayEndMessage();
+    void displayEndMessage() {
+        showMessage("terminating program");
+    }
 
-
+    abstract void showMessage(String message);
 
 
 }

@@ -6,24 +6,19 @@ import java.sql.SQLException;
 public class ControllerGui extends Controller {
 
     @Override
-    void displaySqlExceptionMessage(SQLException e) {
-        JOptionPane.showMessageDialog(null, "data base crashed");
-    }
-
-
-
-    @Override
     String setTitle(){
         return JOptionPane.showInputDialog("set title");
     }
     @Override
     int setYear(){
         String yearOfProductionString = JOptionPane.showInputDialog("set year of production");
-        return Integer.parseInt(yearOfProductionString);
-    }
-    @Override
-    void incorrectYearMessage(){
-        JOptionPane.showMessageDialog(null, "wrong date of production, try again");
+        if(MovieValidator.validateMovieDate(yearOfProductionString)){
+            return Integer.parseInt(yearOfProductionString);
+        } else {
+            System.out.println("wrong year of production");
+            return setYear();
+        }
+
     }
     @Override
     String setGenre(){
@@ -33,8 +28,6 @@ public class ControllerGui extends Controller {
     int setScore(){
         return Integer.parseInt(JOptionPane.showInputDialog("set rate (1-10)"));
     }
-
-
     @Override
     String readDecision() {
         return JOptionPane.showInputDialog("""
@@ -43,11 +36,6 @@ public class ControllerGui extends Controller {
                 2 - display movies
                 3 - terminate program
                 """);
-    }
-
-    @Override
-    void displayAddMovieMessage() {
-        JOptionPane.showMessageDialog(null, "you've chosen adding movie");
     }
 
     @Override
@@ -61,8 +49,9 @@ public class ControllerGui extends Controller {
         JOptionPane.showMessageDialog(null, displayMovieString.toString());
     }
 
+
     @Override
-    void displayEndMessage() {
-        JOptionPane.showMessageDialog(null,"terminating program");
+    void showMessage(String message) {
+        JOptionPane.showMessageDialog(null,message);
     }
 }
