@@ -33,13 +33,12 @@ public class ControllerGui extends Controller {
 
     @Override
     void displayMovies() throws SQLException {
-        JOptionPane.showMessageDialog(null, "you've chosen displaying movies");
+        showMessage("you've chosen displaying movies");
         StringBuilder displayMovieString = new StringBuilder();
-
         for (Movie movie : MoviesService.getInstance().getMovies()) {
             displayMovieString.append(movie).append("\n");
         }
-        JOptionPane.showMessageDialog(null, displayMovieString.toString());
+        showMessage(displayMovieString.toString());
     }
 
 
