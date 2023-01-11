@@ -1,3 +1,5 @@
+package movies;
+
 import java.util.List;
 
 public class Movie {
@@ -16,7 +18,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" +
+        return "movies.Movie{" +
                 "title='" + title + '\'' +
                 ", yearOfProduction=" + yearOfProduction +
                 ", movieGenre='" + movieGenre + '\'' +

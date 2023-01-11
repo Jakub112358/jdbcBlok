@@ -1,6 +1,9 @@
+package movies;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Menu {
+public class ControllerConsole {
     private boolean running = true;
 
     public void startMenu() {
@@ -18,6 +21,14 @@ public class Menu {
 
 
     private void executeOption(String input) {
+        try {
+            handleOption(input);
+        } catch (SQLException e) {
+            System.out.println("data base crashed");
+        }
+    }
+
+    private void handleOption(String input) throws SQLException {
 
         switch (input) {
             case "1":
@@ -27,7 +38,8 @@ public class Menu {
                 displayMovies();
                 break;
             case "3":
-terminateLoop();
+                MoviesDAO.getInstance().closeConnection();
+                terminateLoop();
                 break;
             default:
                 System.out.println("wrong input, try again");
@@ -42,7 +54,7 @@ terminateLoop();
         System.out.println("set year of production");
         int yearOfProduction = scanner.nextInt();
         // tu jest coś źle!!
-        if(!MovieValidator.validateMovieDate(yearOfProduction)){
+        if (!MovieValidator.validateMovieDate(yearOfProduction)) {
             System.out.println("wrong date of production");
             return setNewMovie();
         }
@@ -70,20 +82,21 @@ terminateLoop();
 
     }
 
-    private void addMovie() {
+    private void addMovie() throws SQLException {
         System.out.println(" you've chosen adding movie");
         Movie inputMovie = setNewMovie();
         MoviesDAO.getInstance().addMovie(inputMovie);
     }
 
-    private void displayMovies() {
+    private void displayMovies() throws SQLException {
         System.out.println("you've chosen displaying movies");
 
         for (Movie movie : MoviesDAO.getInstance().getMovies()) {
             System.out.println(movie);
         }
     }
-    private void terminateLoop(){
+
+    private void terminateLoop() {
         System.out.println("terminating program");
         running = false;
     }

@@ -1,4 +1,4 @@
-import books.Book;
+package movies;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,23 +23,27 @@ public class MoviesDAO {
     private Connection connection;
 
     private MoviesDAO() {
-        connect();
-        createTable();
-    }
-
-    private void createTable() {
         try {
-            connection.prepareStatement(CREATE_TABLE_SQL).execute();
+            connect();
+            createTable();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("data base crashed :(");
         }
     }
 
-    private void connect() {
-        try {
+    private void createTable() throws SQLException {
+            connection.prepareStatement(CREATE_TABLE_SQL).execute();
+    }
+
+    private void connect() throws SQLException{
             connection = DriverManager.getConnection(URL_SQL, USER_SQL, PASSWORD_SQL);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+    }
+    public void closeConnection() throws SQLException {
+        if (connection != null){
+
+                connection.close();
+
         }
     }
 
@@ -51,45 +55,39 @@ public class MoviesDAO {
         return instance;
     }
 
-    public void addMovie(Movie movie) {
+    public void addMovie(Movie movie) throws SQLException {
         PreparedStatement preparedStatement;
-        try {
+
             preparedStatement = connection.prepareStatement(ADD_MOVIE_SQL);
             preparedStatement.setString(1, movie.getTitle());
             preparedStatement.setInt(2, movie.getYearOfProduction());
             preparedStatement.setString(3, movie.getMovieGenre());
             preparedStatement.setInt(4, movie.getScore());
             preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
-    public List<Movie> getMovies() {
+    public List<Movie> getMovies() throws SQLException {
         List<Movie> movieList;
         PreparedStatement preparedStatement;
-        try {
+
             preparedStatement = connection.prepareStatement(GET_ALL_MOVIES_SQL);
             ResultSet resultSet = preparedStatement.executeQuery();
             movieList = mapResultSetToList(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         return movieList;
     }
 
-    private List<Movie> mapResultSetToList(ResultSet resultSet){
+    private List<Movie> mapResultSetToList(ResultSet resultSet) throws SQLException {
         List<Movie> movieList = new ArrayList<>();
-        try {
+
             while (resultSet.next()) {
                 movieList.add(new Movie(resultSet.getString("title"),
                         resultSet.getInt("yearOfProduction"),
                         resultSet.getString("genre"),
                         resultSet.getInt("score")));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         return movieList;
     }
 
