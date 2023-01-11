@@ -10,15 +10,8 @@ public class ControllerGui extends Controller {
         return JOptionPane.showInputDialog("set title");
     }
     @Override
-    int setYear(){
-        String yearOfProductionString = JOptionPane.showInputDialog("set year of production");
-        if(MovieValidator.validateMovieDate(yearOfProductionString)){
-            return Integer.parseInt(yearOfProductionString);
-        } else {
-            System.out.println("wrong year of production");
-            return setYear();
-        }
-
+    String setCustomerYear() {
+        return JOptionPane.showInputDialog("set year of production");
     }
     @Override
     String setGenre(){

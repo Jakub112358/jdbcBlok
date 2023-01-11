@@ -48,8 +48,19 @@ public abstract class Controller {
         return new Movie(title, yearOfProduction, genre, score);
     }
 
+    int setYear() {
+        String yearOfProductionString = setCustomerYear();
+        if(MovieValidator.validateMovieDate(yearOfProductionString)){
+            return Integer.parseInt(yearOfProductionString);
+        } else {
+            showMessage("wrong year of production");
+            return setYear();
+        }
+    }
+    abstract String setCustomerYear();
+
     abstract String setTitle();
-    abstract int setYear();
+
     abstract String setGenre();
     abstract int setScore();
 

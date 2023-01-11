@@ -1,6 +1,5 @@
 package movies;
 
-import javax.swing.*;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -12,18 +11,9 @@ public class ControllerConsole extends Controller {
         System.out.println("set title");
         return scanner.nextLine();
     }
+
     @Override
-    int setYear() {
-        System.out.println("set year of production");
-        String yearOfProductionString = scanner.nextLine();
-        if(MovieValidator.validateMovieDate(yearOfProductionString)){
-            return Integer.parseInt(yearOfProductionString);
-        } else {
-            System.out.println("wrong year of production");
-            return setYear();
-        }
-    }
-    String setCustomerYear(){
+    String setCustomerYear() {
         System.out.println("set year of production");
         return scanner.nextLine();
     }
@@ -34,11 +24,13 @@ public class ControllerConsole extends Controller {
         scanner.nextLine();
         return scanner.nextLine();
     }
+
     @Override
     int setScore() {
         System.out.println("set rate (1-10): ");
         return scanner.nextInt();
     }
+
     private void showOptions() {
         System.out.println("""
                 Select:
@@ -47,6 +39,7 @@ public class ControllerConsole extends Controller {
                 3 - terminate program
                 """);
     }
+
     @Override
     String readDecision() {
         showOptions();
@@ -63,10 +56,9 @@ public class ControllerConsole extends Controller {
             System.out.println(movie);
         }
     }
+
     @Override
-
-
-    void showMessage(String message){
+    void showMessage(String message) {
         System.out.println(message);
     }
 }
