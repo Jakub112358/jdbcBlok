@@ -10,18 +10,28 @@ public class ControllerGui extends Controller {
         JOptionPane.showMessageDialog(null, "data base crashed");
     }
 
+
+
     @Override
-    Movie setNewMovie() {
-        String title = JOptionPane.showInputDialog("set title");
+    String setTitle(){
+        return JOptionPane.showInputDialog("set title");
+    }
+    @Override
+    int setYear(){
         String yearOfProductionString = JOptionPane.showInputDialog("set year of production");
-        int yearOfProduction = Integer.parseInt(yearOfProductionString);
-        if (!MovieValidator.validateMovieDate(yearOfProduction)) {
-            JOptionPane.showMessageDialog(null, "wrong date of production, try again");
-            return setNewMovie();
-        }
-        String genre = JOptionPane.showInputDialog("set genre");
-        int score = Integer.parseInt(JOptionPane.showInputDialog("set rate (1-10)"));
-        return new Movie(title, yearOfProduction, genre, score);
+        return Integer.parseInt(yearOfProductionString);
+    }
+    @Override
+    void incorrectYearMessage(){
+        JOptionPane.showMessageDialog(null, "wrong date of production, try again");
+    }
+    @Override
+    String setGenre(){
+        return JOptionPane.showInputDialog("set genre");
+    }
+    @Override
+    int setScore(){
+        return Integer.parseInt(JOptionPane.showInputDialog("set rate (1-10)"));
     }
 
 

@@ -9,7 +9,6 @@ public abstract class Controller {
             menuAction();
         } while (running);
     }
-
     private void menuAction() {
         String input = readDecision();
         executeOption(input);
@@ -38,7 +37,23 @@ public abstract class Controller {
         }
     }
 
-    abstract Movie setNewMovie();
+    private Movie setNewMovie() {
+        String title = setTitle();
+        int yearOfProduction = setYear();
+        if (!MovieValidator.validateMovieDate(yearOfProduction)) {
+            incorrectYearMessage();
+            return setNewMovie();
+        }
+        String genre = setGenre();
+        int score = setScore();
+        return new Movie(title, yearOfProduction, genre, score);
+    }
+
+    abstract String setTitle();
+    abstract int setYear();
+    abstract void incorrectYearMessage();
+    abstract String setGenre();
+    abstract int setScore();
 
     abstract String readDecision();
     private void addMovie() throws SQLException {

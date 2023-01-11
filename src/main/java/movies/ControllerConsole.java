@@ -4,31 +4,43 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ControllerConsole extends Controller {
+    Scanner scanner = new Scanner(System.in);
 
     @Override
     void displaySqlExceptionMessage(SQLException e) {
         e.printStackTrace();
     }
 
+
     @Override
-    Movie setNewMovie() {
-        Scanner scanner = new Scanner(System.in);
+    String setTitle() {
         System.out.println("set title");
-        String title = scanner.nextLine();
-        System.out.println("set year of production");
-        int yearOfProduction = scanner.nextInt();
-        if (!MovieValidator.validateMovieDate(yearOfProduction)) {
-            System.out.println("wrong date of production");
-            return setNewMovie();
-        }
-        System.out.println("set genre");
-        scanner.nextLine();
-        String genre = scanner.nextLine();
-        System.out.println("set rate (1-10): ");
-        int score = scanner.nextInt();
-        return new Movie(title, yearOfProduction, genre, score);
+        return scanner.nextLine();
     }
 
+    @Override
+    int setYear() {
+        System.out.println("set year of production");
+        return scanner.nextInt();
+    }
+
+    @Override
+    void incorrectYearMessage() {
+        System.out.println("wrong date of production");
+    }
+
+    @Override
+    String setGenre() {
+        System.out.println("set genre");
+        scanner.nextLine();
+        return scanner.nextLine();
+    }
+
+    @Override
+    int setScore() {
+        System.out.println("set rate (1-10): ");
+        return scanner.nextInt();
+    }
 
     private void showOptions() {
         System.out.println("""
