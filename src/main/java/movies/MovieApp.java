@@ -2,7 +2,14 @@ package movies;
 
 public class MovieApp {
     public static void main(String[] args) {
-        ControllerConsole menu = new ControllerConsole();
+        int choice = 2;
+        Controller menu;
+        if(choice == 1)
+            menu = new ControllerConsole();
+         else
+            menu = new ControllerWindows();
+
         menu.startMenu();
+
     }
 }

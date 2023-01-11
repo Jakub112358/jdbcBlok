@@ -3,51 +3,15 @@ package movies;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class ControllerConsole {
-    private boolean running = true;
+public class ControllerConsole extends Controller {
 
-    public void startMenu() {
-        do {
-            menuAction();
-        } while (running);
+    @Override
+    void displaySqlExceptionMessage(SQLException e) {
+        e.printStackTrace();
     }
 
-    private void menuAction() {
-        showOptions();
-        String input = readDecision();
-        executeOption(input);
-
-    }
-
-
-    private void executeOption(String input) {
-        try {
-            handleOption(input);
-        } catch (SQLException e) {
-            System.out.println("data base crashed");
-        }
-    }
-
-    private void handleOption(String input) throws SQLException {
-
-        switch (input) {
-            case "1":
-                addMovie();
-                break;
-            case "2":
-                displayMovies();
-                break;
-            case "3":
-                MoviesDAO.getInstance().closeConnection();
-                terminateLoop();
-                break;
-            default:
-                System.out.println("wrong input, try again");
-
-        }
-    }
-
-    private Movie setNewMovie() {
+    @Override
+    Movie setNewMovie() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("set title");
         String title = scanner.nextLine();
@@ -76,19 +40,21 @@ public class ControllerConsole {
                 """);
     }
 
-    private String readDecision() {
+    @Override
+    String readDecision() {
+        showOptions();
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
 
     }
 
-    private void addMovie() throws SQLException {
+    @Override
+    void displayAddMovieMessage() {
         System.out.println(" you've chosen adding movie");
-        Movie inputMovie = setNewMovie();
-        MoviesDAO.getInstance().addMovie(inputMovie);
     }
 
-    private void displayMovies() throws SQLException {
+    @Override
+    void displayMovies() throws SQLException {
         System.out.println("you've chosen displaying movies");
 
         for (Movie movie : MoviesDAO.getInstance().getMovies()) {
@@ -96,9 +62,10 @@ public class ControllerConsole {
         }
     }
 
-    private void terminateLoop() {
+
+    @Override
+    void displayEndMessage() {
         System.out.println("terminating program");
-        running = false;
     }
 }
 
