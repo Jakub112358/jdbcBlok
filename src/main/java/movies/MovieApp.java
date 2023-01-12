@@ -1,5 +1,9 @@
 package movies;
 
+import movies.controller.Controller;
+import movies.controller.ControllerConsole;
+import movies.controller.ControllerGui;
+
 public class MovieApp {
     private static final String CONSOLE_MODE = "console";
     private static final String GUI_MODE = "gui";

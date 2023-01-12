@@ -1,4 +1,7 @@
-package movies;
+package movies.controller;
+
+import movies.model.Movie;
+import movies.service.MoviesService;
 
 import java.sql.SQLException;
 

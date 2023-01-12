@@ -1,4 +1,4 @@
-package movies;
+package movies.model;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "movies.Movie{" +
+        return "movies.model.Movie{" +
                 "title='" + title + '\'' +
                 ", yearOfProduction=" + yearOfProduction +
                 ", movieGenre='" + movieGenre + '\'' +

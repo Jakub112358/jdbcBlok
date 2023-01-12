@@ -1,4 +1,6 @@
-package movies;
+package movies.controller;
+
+import movies.controller.Controller;
 
 import java.util.Scanner;
 
