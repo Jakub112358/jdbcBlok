@@ -1,10 +1,10 @@
 package movies;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ControllerConsole extends Controller {
     Scanner scanner = new Scanner(System.in);
+
     @Override
     void showMessage(String message) {
         System.out.println(message);

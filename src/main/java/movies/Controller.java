@@ -20,7 +20,7 @@ public abstract class Controller {
         try {
             handleOption(input);
         } catch (SQLException e) {
-            showMessage("data base crashed");
+            showMessage("data base error");
         }
     }
 
@@ -37,7 +37,16 @@ public abstract class Controller {
                 MoviesService.getInstance().closeConnection();
                 terminateLoop();
                 break;
+            case "4":
+                restartTable();
+                break;
+                
         }
+    }
+
+    private void restartTable() throws SQLException {
+        showMessage("you've chosen restarting table");
+        MoviesService.getInstance().truncateTable();
     }
 
     private Movie setNewMovie() {
@@ -50,7 +59,7 @@ public abstract class Controller {
 
     int setYear() {
         String yearOfProductionString = getStringFromUser("set year of production");
-        if (validateNumber(yearOfProductionString,"year of production",1800,2100)) {
+        if (validateNumber(yearOfProductionString, "year of production", 1800, 2100)) {
             return Integer.parseInt(yearOfProductionString);
         } else {
             return setYear();
@@ -67,7 +76,7 @@ public abstract class Controller {
 
     private int setRate() {
         String rateString = getStringFromUser("set rate (1-10): ");
-        if (validateNumber(rateString,"rate",1,10)) {
+        if (validateNumber(rateString, "rate", 1, 10)) {
             return Integer.parseInt(rateString);
         } else {
             return setRate();
@@ -80,6 +89,7 @@ public abstract class Controller {
                 1 - add movie
                 2 - display movies
                 3 - terminate program
+                4 - restart table
                 """);
     }
 
@@ -113,20 +123,23 @@ public abstract class Controller {
 
     private boolean validateNumber(String inputString, String name, int min, int max) {
         try {
-            int number = Integer.parseInt(inputString);
-            if (number < min) {
-                showMessage(name + " must be > " + min);
-                return false;
-            }
-            if (number > max) {
-                showMessage(name + " must be < " + max);
-                return false;
-            }
-            return true;
+            return validateNumber(Integer.parseInt(inputString), name, min, max);
         } catch (NumberFormatException e) {
-            showMessage(name + " must be int");
+            showMessage(name + " must be integer");
             return false;
         }
+    }
+
+    private boolean validateNumber(int inputInt, String name, int min, int max) {
+        if (inputInt < min) {
+            showMessage(name + " must be > " + min);
+            return false;
+        }
+        if (inputInt > max) {
+            showMessage(name + " must be < " + max);
+            return false;
+        }
+        return true;
     }
 
 }
